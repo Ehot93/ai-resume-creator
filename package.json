@@ -11,6 +11,9 @@
   "dependencies": {
     "@phosphor-icons/react": "^2.1.7",
     "@radix-ui/react-slot": "^1.1.2",
+    "@reatom/core": "^3.10.1",
+    "@reatom/framework": "^3.4.62",
+    "@reatom/npm-react": "^3.10.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.479.0",

@@ -25,8 +25,9 @@ const Work = ({items}:WorkProps) => {
         id: Date.now().toString(),
     });
 
-    const handleDelete = useCallback(()=>{
-        // setWorkListItems()
+    const handleDelete = useCallback((item: WorkListItemData) => {
+        console.log(1);
+        setWorkListItems(workListItems.filter((i) => i.id !== item.id));
     }, []);
 
     return (
@@ -35,7 +36,7 @@ const Work = ({items}:WorkProps) => {
                 <Briefcase size={32} />
                 Work Experience
             </h2>
-            {workListItems.map((item, index) => <WorkListItem item={item} onChange={onChangeHandler} onDelete={() => handleDelete.bind(item)} key={index}/>)}
+            {workListItems.map((item, index) => <WorkListItem item={item} onChange={onChangeHandler} onDelete={() => handleDelete(item)} key={index}/>)}
            <Button onClick={handleAdd}>+ Add Another Experience</Button>
         </div>
     )

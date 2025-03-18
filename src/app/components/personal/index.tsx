@@ -1,41 +1,64 @@
+'use client'
+
 import { Input } from "@/components/ui/input";
 import { User } from "@phosphor-icons/react";
+import { useForm } from "react-hook-form";
+import { PersonalInfoData } from "@/app/model/personal";
+import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
-const Personal = () => {
+const Personal = ({data, onChange}: {data: PersonalInfoData, onChange: (data: PersonalInfoData) => void}) => {
+    const { handleSubmit, register, watch, getValues } = useForm<PersonalInfoData>({
+        defaultValues: data,
+        mode: "onChange"
+    });
+    
+    useEffect(() => {
+        const subscription = watch(() => {
+            onChange(getValues());
+        })
+        return () => subscription.unsubscribe()
+    }, [watch])
+
+    const onChangeHandler = (data: PersonalInfoData) => {
+        onChange(data);
+    }
+
     return (
         <div className="flex flex-col gap-2">
             <h2>
                 <User size={20} />
                 Personal Information
             </h2>
-            <form>
+            <form onSubmit={handleSubmit(onChangeHandler)}>
                 <div className="flex gap-2">
                     <Input
                         label="Full Name"
-                        name="name"
+                        {...register("name")}
                     />
                     <Input
                         label="Job Title"
-                        name="job"
+                        {...register("job")}
                     />
                 </div>
                 <div className="flex gap-2">
                     <Input
                         label="Email"
-                        name="email"
+                        {...register("email")}
                     />
                     <Input
                         label="Phone"
-                        name="phone"
+                        {...register("phone")}
                     />
                 </div>
                 <div>
                     <Input
                         label="Location"
-                        name="location"
+                        {...register("location")}
                     />
-                </div>
+                </div>    
             </form>
+            <Button type="submit">Submit</Button>
         </div>
     )
 }

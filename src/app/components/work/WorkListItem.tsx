@@ -24,9 +24,9 @@ const WorkListItem = ({item:{company, position, startDate, endDate, description}
 
     return (
         <div className="relative">
-            <div className="absolute top-0 right-0 cursor-pointer" onClick={onDelete}>
+            <button className="absolute top-0 right-0 cursor-pointer" onClick={onDelete}>
                 <X size={32} />
-            </div>
+            </button>
             <form onSubmit={handleSubmit(onChange)}>
                 <div className="flex gap-2">
                     <Input

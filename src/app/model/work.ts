@@ -1,3 +1,5 @@
+import { atom } from "@reatom/core";
+
 export interface WorkListItemData {
     company: string;
     position: string;
@@ -6,3 +8,5 @@ export interface WorkListItemData {
     description: string;
     id: string;
 }
+
+export const workListData = atom<WorkListItemData[]>([]);
