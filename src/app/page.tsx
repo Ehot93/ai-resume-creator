@@ -1,10 +1,12 @@
 import LayoutForm from "./components/LayoutForm";
-
+import { Providers } from "./_providers";
 
 export default function Home() {
   return (
-    <div>
-      <LayoutForm/>
-    </div>
+    <Providers>
+      <div>
+        <LayoutForm/>
+      </div>
+    </Providers>
   );
 }

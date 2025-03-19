@@ -1,36 +1,30 @@
 'use client';
 
 import { Sparkle, X } from "@phosphor-icons/react";
-import { useCallback, useState, useId } from "react";
+import { useId } from "react";
 import { Button } from "@/components/ui/button";
-import { SkillItemData } from "@/app/model/skills";
+import { addSkill, deleteSkill, SkillItemData, skillListData, updateSkill } from "@/app/model/skills";
 import { Input } from "@/components/ui/input";
+import { reatomComponent } from "@reatom/npm-react";
 
 interface SkillsProps {
     items: SkillItemData[];
-    onChange: (value: SkillItemData[]) => void;
 }
 
-const Skills = ({items}: SkillsProps) => {
-    const [skillItems, setSkillItems] = useState<SkillItemData[]>(items.length ? items : [{id: "initial-1", name: ""}]); 
+const Skills = reatomComponent<SkillsProps>(({ctx}) => {
     const idPrefix = useId();
 
     const handleAdd = () => {
-        const newId = `${idPrefix}-${skillItems.length}`;
-        setSkillItems([...skillItems, {
-            name: "",
-            id: newId,
-        }]);
+        const newId = `${idPrefix}-${ctx.get(skillListData).length}`;
+        addSkill(ctx, newId);
     };
 
-    const handleDelete = useCallback((id: string) => {
-        setSkillItems(prev => prev.filter(item => item.id !== id));
-    }, []);
+    const handleDelete = (id: string) => {
+        deleteSkill(ctx, id);
+    };
 
     const handleSkillChange = (id: string, name: string) => {
-        setSkillItems(prev => prev.map(item => 
-            item.id === id ? { ...item, name } : item
-        ));
+        updateSkill(ctx, {id, name});
     };
 
     return (
@@ -45,7 +39,7 @@ const Skills = ({items}: SkillsProps) => {
             </p>
             
             <div className="flex flex-col gap-4">
-                {skillItems.map((item, index) => (
+                {ctx.spy(skillListData).map((item, index) => (
                     <div key={item.id} className="relative">
                         <Input 
                             placeholder={`Skill ${index + 1}`}
@@ -74,6 +68,6 @@ const Skills = ({items}: SkillsProps) => {
             </div>
         </div>
     );
-};
+});
 
 export default Skills; 

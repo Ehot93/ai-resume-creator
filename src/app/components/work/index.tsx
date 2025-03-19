@@ -2,33 +2,21 @@
 
 import { Briefcase } from "@phosphor-icons/react";
 import WorkListItem from "./WorkListItem";
-import { useCallback, useState } from "react";
-import { WorkListItemData } from "@/app/model/work";
+import { useId } from "react";
+import { addWork, workListData, WorkListItemData } from "@/app/model/work";
 import { Button } from "@/components/ui/button";
+import { reatomComponent } from "@reatom/npm-react";
 
 interface WorkProps {
     items: WorkListItemData[];
-    onChange: (value: WorkListItemData[]) => void;
 }
-const Work = ({items}:WorkProps) => {
-    const [workListItems, setWorkListItems] = useState<WorkListItemData[]>(items);
-    const onChangeHandler = useCallback((item: WorkListItemData) => {
-        setWorkListItems((prev) => [...prev.filter((i) => i.id !== item.id), item]);
-    }, []);
+const Work = reatomComponent<WorkProps>(({ctx}) => {
+    const idPrefix = useId();
 
-    const handleAdd = () => onChangeHandler({
-        company: "",
-        position: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-        id: Date.now().toString(),
-    });
-
-    const handleDelete = useCallback((item: WorkListItemData) => {
-        console.log(1);
-        setWorkListItems(workListItems.filter((i) => i.id !== item.id));
-    }, []);
+    const handleAdd = () => {
+        const newId = `${idPrefix}-${ctx.get(workListData).length}`;
+        addWork(ctx, newId)
+    };
 
     return (
         <div className="flex flex-col gap-2">
@@ -36,10 +24,10 @@ const Work = ({items}:WorkProps) => {
                 <Briefcase size={32} />
                 Work Experience
             </h2>
-            {workListItems.map((item, index) => <WorkListItem item={item} onChange={onChangeHandler} onDelete={() => handleDelete(item)} key={index}/>)}
+            {ctx.spy(workListData).map((item) => <WorkListItem item={item} key={item.id}/>)}
            <Button onClick={handleAdd}>+ Add Another Experience</Button>
         </div>
     )
-}
+})
 
 export default Work;
