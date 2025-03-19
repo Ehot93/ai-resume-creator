@@ -1,64 +1,66 @@
 'use client'
 
-import { User } from "@phosphor-icons/react";
 import { Input } from "@/components/ui/input";
-import { personalInfoData, updatePersonalInfo } from "@/app/model/personal";
+import { User } from "@phosphor-icons/react";
+import { useForm } from "react-hook-form";
+import { personalDataUnwrapped, personalInfoData, PersonalInfoData } from "@/app/model/personal";
+import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 import { reatomComponent } from "@reatom/npm-react";
 
 const Personal = reatomComponent(({ctx}) => {
-    const personalInfo = ctx.spy(personalInfoData);
+    const { register, watch } = useForm<PersonalInfoData>({
+        defaultValues: ctx.get(personalDataUnwrapped),
+        mode: "onChange"
+    });
 
-    const handleChange = (field: string, value: string) => {
-        updatePersonalInfo(ctx, { [field]: value });
-    };
+    useEffect(() => {
+        const subscription = watch((value, { name }) => {
+
+            if(typeof name === "undefined") return;
+            const data = ctx.get(personalInfoData);
+            data[name](ctx, value[name] ?? "");
+        })
+        return () => subscription.unsubscribe()
+    }, [watch])
 
     return (
-        <div className="flex flex-col gap-6">
-            <h2 className="flex items-center gap-2 text-xl font-medium">
-                <User size={24} className="text-blue-500" />
+        <div className="flex flex-col gap-2">
+            <h2>
+                <User size={20} />
                 Personal Information
             </h2>
-            
             <form>
                 <div className="flex gap-2">
                     <Input
                         label="Full Name"
-                        name="name"
-                        value={ctx.spy(personalInfo.name)}
-                        onChange={(e) => handleChange('name', e.target.value)}
+                        {...register("name")}
                     />
                     <Input
                         label="Job Title"
-                        name="job"
-                        value={ctx.spy(personalInfo.job)}
-                        onChange={(e) => handleChange('job', e.target.value)}
+                        {...register("job")}
                     />
                 </div>
                 <div className="flex gap-2">
                     <Input
                         label="Email"
-                        name="email"
-                        value={ctx.spy(personalInfo.email)}
-                        onChange={(e) => handleChange('email', e.target.value)}
+                        {...register("email")}
                     />
                     <Input
                         label="Phone"
-                        name="phone"
-                        value={ctx.spy(personalInfo.phone)}
-                        onChange={(e) => handleChange('phone', e.target.value)}
+                        {...register("phone")}
                     />
                 </div>
                 <div>
                     <Input
                         label="Location"
-                        name="location"
-                        value={ctx.spy(personalInfo.location)}
-                        onChange={(e) => handleChange('location', e.target.value)}
+                        {...register("location")}
                     />
-                </div>
+                </div>    
             </form>
+            <Button type="submit">Submit</Button>
         </div>
     )
-});
+})
 
 export default Personal;

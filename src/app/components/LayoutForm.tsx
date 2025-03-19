@@ -9,22 +9,11 @@ import Education from "./education";
 import Skills from "./skills";
 import { Button } from "@/components/ui/button";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
-import { FullData } from "../model/data";
+import Summary from "./summary";
 
 const LayoutForm = () => {
     const [currentStep, setCurrentStep] = useState(0);
-    const [fullData, setFullData] = useState<FullData>({
-        personal: {
-            name: "",
-            job: "",
-            email: "",
-            phone: "",
-            location: "",
-        },
-        work: [],
-        education: [],
-        skills: [],
-    });
+
     const totalSteps = 5;
 
     const handleNext = useCallback(() => {
@@ -39,20 +28,18 @@ const LayoutForm = () => {
         }
     }, [currentStep]);
 
-    const handleUpdateData = (data: Partial<FullData>) => {
-        setFullData(prev => ({...prev, ...data}));
-    }
-
     const renderStep = () => {
         switch (currentStep) {
             case 0:
-                return <Personal data={fullData.personal} onChange={(data) => handleUpdateData({personal: data})} />;
+                return <Personal/>;
             case 1:
-                return <Work items={fullData.work} onChange={(data) => handleUpdateData({work: data})} />;
+                return <Work />;
             case 2:
-                return <Education items={fullData.education} onChange={(data) => handleUpdateData({education: data})} />;
+                return <Education />;
             case 3:
-                return <Skills items={fullData.skills} onChange={(data) => handleUpdateData({skills: data})} />;
+                return <Skills />;
+            case 4: 
+            return <Summary/>
             default:
                 return null;
         }

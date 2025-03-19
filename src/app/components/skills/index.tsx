@@ -3,15 +3,11 @@
 import { Sparkle, X } from "@phosphor-icons/react";
 import { useId } from "react";
 import { Button } from "@/components/ui/button";
-import { addSkill, deleteSkill, SkillItemData, skillListData, updateSkill } from "@/app/model/skills";
+import { addSkill, deleteSkill, skillListData, updateSkill } from "@/app/model/skills";
 import { Input } from "@/components/ui/input";
 import { reatomComponent } from "@reatom/npm-react";
 
-interface SkillsProps {
-    items: SkillItemData[];
-}
-
-const Skills = reatomComponent<SkillsProps>(({ctx}) => {
+const Skills = reatomComponent(({ctx}) => {
     const idPrefix = useId();
 
     const handleAdd = () => {

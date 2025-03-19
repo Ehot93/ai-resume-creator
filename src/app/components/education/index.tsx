@@ -3,13 +3,11 @@
 import { GraduationCap } from "@phosphor-icons/react";
 import { useId } from "react";
 import { Button } from "@/components/ui/button";
-import { addEducation, EducationListItemData, educationListData } from "@/app/model/education";
+import { addEducation, educationListData } from "@/app/model/education";
 import EducationListItem from "./EducationListItem";
 import { reatomComponent } from "@reatom/npm-react";
-interface EducationProps {
-    items: EducationListItemData[];
-}
-const Education = reatomComponent<EducationProps>(({ctx}) => {
+
+const Education = reatomComponent(({ctx}) => {
     const idPrefix = useId();
 
     const handleAdd = () => {

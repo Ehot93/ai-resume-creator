@@ -3,14 +3,11 @@
 import { Briefcase } from "@phosphor-icons/react";
 import WorkListItem from "./WorkListItem";
 import { useId } from "react";
-import { addWork, workListData, WorkListItemData } from "@/app/model/work";
+import { addWork, workListData } from "@/app/model/work";
 import { Button } from "@/components/ui/button";
 import { reatomComponent } from "@reatom/npm-react";
 
-interface WorkProps {
-    items: WorkListItemData[];
-}
-const Work = reatomComponent<WorkProps>(({ctx}) => {
+const Work = reatomComponent(({ctx}) => {
     const idPrefix = useId();
 
     const handleAdd = () => {

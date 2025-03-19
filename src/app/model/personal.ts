@@ -1,4 +1,4 @@
-import { action, AtomMut } from "@reatom/core";
+import { action, atom, AtomMut } from "@reatom/core";
 import { ToAtomType, createDataAtom } from "../lib/atomUtils";
 
 export interface PersonalInfoData {
@@ -35,4 +35,15 @@ export const updatePersonalInfo = action((ctx, payload: Partial<PersonalInfoData
         }
     }
 });
+
+export const personalDataUnwrapped = atom<PersonalInfoData>((ctx) => {
+    const value = ctx.spy(personalInfoData);
+    return {
+        name: ctx.spy(value.name),
+        job: ctx.spy(value.job),
+        email: ctx.spy(value.email),
+        phone: ctx.spy(value.phone),
+        location: ctx.spy(value.location)
+    }
+})
 
